@@ -1,0 +1,459 @@
+scalar Upload
+type Token {
+  token: String
+  refreshToken: String
+  email: String
+  partnerid: String
+  iat: String
+  exp: String
+  status: Boolean
+}
+type Account {
+  id: ID!
+  name: String
+  email: String
+  password: String
+  logintype: Int
+  status: Int
+  levelid: Int
+  deptid: Int
+  partnerid: Int
+  partner: Partner
+  createdAt: String
+  updatedAt: String
+}
+type Partner {
+  id: ID!
+  ids: String
+  name: String
+  company: String
+  label: String
+  email: String
+  phone: String
+  address: String
+  expertise: String
+  password: String
+  create_date: String
+  expire_date: String
+  active: Int
+  # productid: Int
+  # product: Product
+  # packageid: Int
+  # package: Package
+  dashboard: Dashboard
+  order: [Order]
+  createdAt: String
+  updatedAt: String
+}
+type Dashboard {
+  active: [Order]
+  cart: [Order]
+  product: [Product]
+  order: [Order]
+}
+type Product {
+  id: ID!
+  ids: String
+  name: String
+  label: String
+  desc: String
+  status: Int
+  package: [Package]
+  # order: PartnerOrder
+  createdAt: String
+  updatedAt: String
+}
+type Package {
+  id: ID!
+  packageid: Int
+  productid: Int
+  name: String
+  menu: String
+  price: String
+  color: String
+  # navigation: [Navigation]
+  desc: String
+  active: Int
+  # lease: [Lease]
+  createdAt: String
+  updatedAt: String
+}
+type Database {
+  id: ID!
+  ids: String
+  name: String
+  label: String
+  desc: String
+  product: Product
+  createdAt: String
+  updatedAt: String
+}
+type Menu {
+  id: ID!
+  name: String
+  content: String
+  link: String
+  access: Int
+  active: Int
+  createdAt: String
+  updatedAt: String
+}
+type Navigation {
+  id: ID!
+  nid: Int
+  pos: Int
+  name: String
+  content: String
+  parentid: Int
+  link: [String]
+  component: String
+  active: Int
+  access: Int
+  subnavid: [Int]
+  subnav: [Navigation]
+  permid: [Int]
+  # permission: [Permission]
+  productid: [Int]
+  # product: [Product]
+  createdAt: String
+  updatedAt: String
+}
+type Permission {
+  id: ID!
+  name: String
+  desc: String
+  active: Int
+  createdAt: String
+  updatedAt: String
+}
+type Engineer {
+  id: ID!
+  name: String
+  active: Int
+  createdAt: String
+  updatedAt: String
+}
+type Owner {
+  id: ID!
+  key: Int
+  text: String
+  value: Int
+  name: String
+  projectid: Int
+  project: Project
+  status: Int
+  createdAt: String
+  updatedAt: String
+}
+type Project {
+  id: ID!
+  key: Int
+  text: String
+  value: Int
+  name: String
+  label: String
+  active: Int
+  createdAt: String
+  updatedAt: String
+}
+type Customer {
+  id: ID!
+  key: Int
+  text: String
+  value: Int
+  name: String
+  projectid: Int
+  project: Project
+  ownerid: Int
+  owner: Owner
+  initial_name: String
+  status: Int
+  createdAt: String
+  updatedAt: String
+}
+type Level {
+  id: ID!
+  name: String
+  partnerid: String
+  productid: [Int]
+  # partner: Partner
+  menuid: [Int]
+  #menu: [Menu]
+  navid: [Int]
+  navigation: [Navigation]
+  negnavid: [Int]
+  negnavigation: [Navigation]
+  createdAt: String
+  updatedAt: String
+}
+type StatusBill {
+  id: ID!
+  ids: String
+  name: String
+  label: String
+  createdAt: String
+  updatedAt: String
+}
+
+type StatusOrder {
+  id: ID!
+  ids: String
+  name: String
+  label: String
+  color: String
+  createdAt: String
+  updatedAt: String
+}
+type Order {
+  id: ID!
+  ids: String
+  order_number: String
+  partnerid: Int
+  partner: Partner
+  productid: Int
+  product: Product
+  packageid: Int
+  package: Package
+  order_date: String
+  start_date: String
+  end_date: String
+  leaseid: Int
+  # lease: Lease
+  status_orderid: Int
+  status_order: StatusOrder
+  remark: String
+  desc: String
+  rev_orderid: Int
+  # detail_rev: ProductOrder
+  bill: Bill
+  createdAt: String
+  updatedAt: String
+}
+type Bill {
+  id: ID!
+  ids: String
+  bill_number: String
+  partner_orderid: Int
+  due_date: String
+  payment: String
+  payment_revision: String
+  payment_date: String
+  status_billid: Int
+  status_bill: StatusBill
+  remark: String
+  desc: String
+  createdAt: String
+  updatedAt: String
+}
+type Lease {
+  id: ID!
+  ids: String
+  name: String
+  discount: String
+  package: String
+  desc: String
+  active: Int
+  price: String
+  pay: String
+  result: String
+  createdAt: String
+  updatedAt: String
+}
+##Query===========================================================================================================
+type Query {
+  testQuery: String
+
+  getAccount: Account
+  getPartner: Partner
+  listPartnerOrder(id: [String], limit: Int, offset: Int, search: String): [Order]
+  listProductActive(
+    id: String
+    name: String
+    label: String
+    desc: String
+  ): [Order]
+
+  listProduct(id: [Int], name: String): [Product]
+  getProduct(id: Int, name: String): Product
+
+  listPackage(id: [Int], name: String): [Package]
+  getPackage(id: Int, name: String): Package
+
+  listDatabase(id: [Int], name: String): [Database]
+  getDatabase(id: Int, name: String): Database
+
+  listMenu(
+    id: [Int]
+    name: String
+    content: String
+    link: String
+    access: Int
+    active: Int
+  ): [Menu]
+  getMenu(
+    id: Int
+    name: String
+    content: String
+    link: String
+    access: Int
+    active: Int
+  ): Menu
+
+  listNavigation(
+    id: [Int]
+    name: String
+    content: String
+    link: String
+    active: Int
+    productid: [Int]
+  ): [Navigation]
+  getNavigation(
+    id: [Int]
+    name: String
+    content: String
+    link: String
+    active: Int
+    productid: [Int]
+  ): Navigation
+
+  listPermission(
+    id: [Int]
+    name: String
+    desc: String
+    active: Int
+  ): [Permission]
+  getPermission(id: Int, name: String, desc: String, active: Int): Permission
+
+  listLevel(id: [Int], name: String): [Level]
+  getLevel(id: Int, name: String): Level
+
+  listEngineer(id: [Int], name: String, active: Int): [Engineer]
+  getEngineer(id: Int, name: String, active: Int): Engineer
+
+  ###Project
+  listProject(id: [Int], name: String, label: String, active: Int): [Project]
+  getProject(id: Int, name: String, label: String, active: Int): Project
+
+  ###Owner
+  listOwner(id: [Int], name: String, projectid: Int, status: Int): [Owner]
+  getOwner(id: Int, name: String, projectid: Int, status: Int): Owner
+
+  ###Customer
+  listCustomer(
+    id: [Int]
+    name: String
+    initial_name: String
+    projectid: Int
+    ownerid: Int
+    status: Int
+  ): [Customer]
+  getCustomer(
+    id: Int
+    name: String
+    initial_name: String
+    projectid: Int
+    ownerid: Int
+    status: Int
+  ): Customer
+
+  listOrder(id: [String], limit: Int, offset: Int, search: String): [Order]
+  getOrder(
+    id: String
+    limit: Int
+    offset: Int
+    search: String
+    status_orderid: Int
+  ): Order
+  getBill(id: String): Bill
+  listStatusOrder(id: [Int], name: String, label: String): [StatusOrder]
+  getStatusOrder(id: Int, name: String, label: String): StatusOrder
+
+  listStatusBill(id: [Int], name: String, label: String): [StatusBill]
+  getStatusBill(id: Int, name: String, label: String): StatusBill
+
+  listLease(
+    id: [Int]
+    name: String
+    discount: Int
+    package: Int
+    desc: String
+    active: Int
+  ): [Lease]
+  getLease(
+    id: Int
+    name: String
+    discount: Int
+    package: Int
+    desc: String
+    active: Int
+  ): Lease
+}
+##Mutation===========================================================================================================
+type Mutation {
+  login(email: String!, password: String!): Token
+  loginPartner(email: String!, password: String!): Token
+
+  createMenu(name: String!, content: String!, link: String!, active: Int!): Menu
+  updateMenu(
+    id: Int!
+    name: String
+    content: String
+    link: String
+    active: Int
+  ): Menu
+  activeMenu(id: Int!): Menu
+  deleteMenu(id: Int!): Boolean
+
+  createNavigation(
+    name: String!
+    content: String!
+    link: String!
+    active: Int!
+  ): Navigation
+  updateNavigation(
+    id: Int!
+    name: String
+    content: String
+    link: String
+    active: Int
+  ): Navigation
+  deleteNavigation(id: Int!): Boolean
+  addSubNavigation(
+    id: Int!
+    name: String!
+    content: String!
+    link: String!
+    active: Int!
+  ): Navigation
+
+  createPermission(name: String!, desc: String!, active: Int!): Permission
+  updatePermission(
+    id: Int!
+    name: String
+    desc: String
+    active: Int
+  ): Permission
+  activePermission(id: Int!): Permission
+  deletePermission(id: Int!): Boolean
+
+  createLevel(name: String!): Level
+  updateLevel(id: Int!, name: String): Level
+  checkLevel(name: String!): Boolean
+  # deleteLevel(id: Int!): DeleteResponse
+  removeLevel(id: Int!): Boolean
+
+  createOrder(productid: String!, packageid: Int!, leaseid: Int!): Order
+  updateOrder(
+    id: String!
+    packageid: Int
+    leaseid: Int
+    revision: Int
+    status_orderid: Int
+    status_billid: Int
+    expire: Int
+  ): Order
+  closeOrder(id: String!, status_orderid: Int): Boolean
+
+  addRoleNavigation(levelid: Int!, navid: Int!, productid: Int!): Boolean
+  removeRoleNavigation(levelid: Int!, navid: Int!, productid: Int!): Boolean
+}
