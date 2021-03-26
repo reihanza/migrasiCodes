@@ -35,7 +35,14 @@ const facebookPassportConfig = () => {
         clientID: "3624660664299714",
         clientSecret: "c88215c0c8804d20b6159b3438e4ff4c",
         callbackURL: "http://localhost:4000/auth/facebook/callback",
-        profileFields: ["id", "displayName", "name", "email"],
+        profileFields: [
+          "id",
+          "displayName",
+          "name",
+          "email",
+          "gender",
+          "picture.type(large)",
+        ],
         passReqToCallback: true,
       },
       function (req, accessToken, refreshToken, profile, done) {
@@ -45,10 +52,10 @@ const facebookPassportConfig = () => {
             facebookAuth(profile);
             // console.log(profile)
             // req.user = profile
-            done(null, profile)
+            done(null, profile);
           }
         } catch (error) {
-          done(error)
+          done(error);
         }
       }
     )
